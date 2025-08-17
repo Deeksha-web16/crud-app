@@ -1,0 +1,30 @@
+body {
+    color: white;
+    background-color: navy;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1, h2 {
+  color: #98daf9;
+}
+
+form input, form button {
+  margin: 5px;
+  padding: 8px;
+}
+
+button {
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: center;
+}
