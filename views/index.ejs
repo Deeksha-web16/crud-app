@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> CRUD App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 min-h-screen flex flex-col items-center p-5 font-sans">
+
+  <h1 class="text-4xl font-extrabold text-white mb-8 drop-shadow-lg">🌟 User Management CRUD App 🌟</h1>
+
+  <!-- Notification -->
+  <div id="notification" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg hidden"></div>
+
+  <!-- Add User Form -->
+  <div class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-md mb-8 transform transition hover:scale-105">
+    <form id="userForm" class="flex flex-col gap-4">
+      <input type="text" id="name" placeholder="Name" class="border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+      <input type="email" id="email" placeholder="Email" class="border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+      <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition transform hover:scale-105">
+        Add User
+      </button>
+    </form>
+  </div>
+
+  <!-- Users Table -->
+  <div class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-3xl transform transition hover:scale-105">
+    <table class="min-w-full border-collapse divide-y divide-gray-200">
+      <thead>
+        <tr class="bg-purple-100">
+          <th class="py-2 px-4 border text-left text-purple-700">Name</th>
+          <th class="py-2 px-4 border text-left text-purple-700">Email</th>
+          <th class="py-2 px-4 border text-left text-purple-700">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    let users = [];
+    const userForm = document.getElementById('userForm');
+    const userTable = document.getElementById('userTable');
+    const notification = document.getElementById('notification');
+
+    function showNotification(message, color='green') {
+      notification.textContent = message;
+      notification.className = `fixed top-5 right-5 bg-${color}-500 text-white px-4 py-2 rounded shadow-lg slide-in`;
+      notification.style.display = 'block';
+      setTimeout(() => notification.style.display = 'none', 2000);
+    }
+
+    function renderTable() {
+      userTable.innerHTML = '';
+      users.forEach((user, index) => {
+        const row = document.createElement('tr');
+        row.className = 'fade-in bg-purple-50 hover:bg-purple-100 transition';
+        row.innerHTML = `
+          <td class="py-2 px-4 border">${user.name}</td>
+          <td class="py-2 px-4 border">${user.email}</td>
+          <td class="py-2 px-4 border flex gap-3">
+            <button onclick="editUser(${index})" class="text-yellow-500 hover:text-yellow-700 transition transform hover:scale-110">Edit</button>
+            <button onclick="deleteUser(${index})" class="text-red-500 hover:text-red-700 transition transform hover:scale-110">Delete</button>
+          </td>
+        `;
+        userTable.appendChild(row);
+      });
+    }
+
+    function editUser(index) {
+      const user = users[index];
+      const name = prompt('Edit Name', user.name);
+      const email = prompt('Edit Email', user.email);
+      if(name && email) {
+        users[index] = { name, email };
+        renderTable();
+        showNotification('User updated successfully', 'blue');
+      }
+    }
+
+    function deleteUser(index) {
+      if(confirm('Are you sure you want to delete this user?')) {
+        users.splice(index, 1);
+        renderTable();
+        showNotification('User deleted successfully', 'red');
+      }
+    }
+
+    userForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if(name && email) {
+        users.push({ name, email });
+        renderTable();
+        userForm.reset();
+        showNotification('User added successfully');
+      } else {
+        showNotification('Please fill in all fields', 'red');
+      }
+    });
+  </script>
+
+</body>
+</html>
