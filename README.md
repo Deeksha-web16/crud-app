@@ -39,7 +39,6 @@ This CRUD Application is one of my practice projects where I applied these skill
 ---
 ✨ _Thank you for visiting my repository!_
 
-✨ \_Thank you for visiting my repository!\_
 
 
 
